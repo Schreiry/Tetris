@@ -1,4 +1,7 @@
-﻿#include <SFML/Graphics.hpp>
+﻿// -=-=-=-  Directive Sapce: TetrisGame -=-=-=-
+
+
+#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <array>
@@ -9,97 +12,107 @@
 #include <sstream>
 #include <cmath>
 
-// ---------------------------
-// Глобальные константы
-// ---------------------------
-const int blockSize = 30;         // размер одного блока (в пикселях)
-const int gridWidth = 10;         // ширина игрового поля (в блоках)
-const int gridHeight = 20;         // высота игрового поля (в блоках)
-const int fieldOffsetX = 50;         // отступ игрового поля от левого края
-const int fieldOffsetY = 50;         // отступ игрового поля от верхнего края
+// ----             ----
+using namespace std;
+using namespace sf;
+// ----             ----
 
-// Размеры окна: игровое поле + область для отчёта и превью
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+
+//  -------------------------
+// |     Global constants    |
+//  -------------------------
+const int blockSize = 30;         // size of one block (in pixels)
+const int gridWidth = 15;         // playing field width (in blocks)
+const int gridHeight = 25;         // playing field height (in blocks)
+const int fieldOffsetX = 50;         // indentation of the playing field from the left edge
+const int fieldOffsetY = 50;         // margin of the playing field from the top edge
+
+// Window size: playing field + report and preview area
 const int windowWidth = fieldOffsetX + gridWidth * blockSize + 200;
 const int windowHeight = fieldOffsetY + gridHeight * blockSize + 50;
 
 // ---------------------------
-// Определение фигур Тетриса (4x4)
-// 'X' – заполненный блок, '.' – пустая клетка
-// Фигуры: I, J, L, O, S, T, Z
+// Definition of Tetris figures (4x4) . 
+// 'X' - filled block, '.' - empty cell . 
+// Figures: I, J, L, O, S, T, Z . 
 // ---------------------------
-std::array<std::string, 7> tetromino =
+array<string, 8> tetromino =
 {
-    "....XXXX........", // I
-    ".X..XXX.........", // J
-    "..X.XXX.........", // L
-    ".XX.XX..........", // O
-    "..XX.XX.........", // S
-    ".X..XX..X.......", // T
-    "XX...XX........."  // Z
+    "....XXXX........", // A
+    ".X..XXX.........", // B
+    "..X.XXX.........", // C
+    //"...." ".XX." ".XX.",//D
+    ".XX.XX..........", // E
+    "..XX.XX.........", // F
+    ".X..XX..X.......", // G
+    "XX...XX.........",  // H
 };
 
-// Яркая палитра цветов для фигур
-std::array<sf::Color, 7> tetroColors =
+// Vivid color palette for figures
+array<Color, 8> tetroColors =
 {
-    sf::Color(0, 255, 255),    // I – циан
-    sf::Color(0, 0, 255),       // J – синий
-    sf::Color(255, 165, 0),     // L – оранжевый
-    sf::Color(255, 255, 0),     // O – жёлтый
-    sf::Color(50, 205, 50),     // S – лаймовый
-    sf::Color(148, 0, 211),     // T – фиолетовый
-    sf::Color(220, 20, 60)      // Z – красный
+    Color(31, 111, 235),    // A – blue   rgb(31, 111, 235)
+    Color(121, 160, 193),       // B – сизый   rgb(121, 160, 193)
+    Color(255, 165, 0),     // C – оранжевый
+	//Color(0, 0, 0),	        // D – черный
+    Color(255, 255, 0),     // O – жёлтый
+    Color(38, 166, 65),     // S – лаймовый  rgb(38, 166, 65)
+    Color(148, 0, 211),     // T – фиолетовый
+    Color(243, 75, 125)      // Z – красный  rgb(243, 75, 125)
 };
 
 // ---------------------------
-// Функция поворота фигуры
-// Вычисляет индекс (0..15) для блока в 4x4 сетке после поворота
+// Shape rotation function
+// Calculates index (0..15) for a block in 4x4 grid after rotation
 // ---------------------------
 int rotate(int px, int py, int r) {
     switch (r % 4) {
-    case 0: return py * 4 + px;           // 0 градусов
-    case 1: return 12 + py - (px * 4);      // 90 градусов
-    case 2: return 15 - (py * 4) - px;      // 180 градусов
-    case 3: return 3 - py + (px * 4);       // 270 градусов
+    case 0: return py * 4 + px;           // 0 degrees
+    case 1: return 12 + py - (px * 4);      // 90 degrees
+    case 2: return 15 - (py * 4) - px;      // 180 degrees
+    case 3: return 3 - py + (px * 4);       // 270 degrees
     }
     return 0;
 }
 
 // ---------------------------
-// Структура для системы частиц (эффект "хвоста кометы")
+// Structure for particle system (comet tail effect)
 // ---------------------------
 struct Particle {
-    sf::Vector2f position;
-    sf::Vector2f velocity;
-    float lifetime;   // время жизни в секундах
-    sf::Color color;
+    Vector2f position;
+    Vector2f velocity;
+    float lifetime;   // lifespan in seconds
+    Color color;
 };
 
 class ParticleSystem {
 public:
-    std::vector<Particle> particles;
+    vector<Particle> particles;
 
-    // Добавляем частицы из позиции pos, с цветом color, count - количество частиц
-    void addParticles(sf::Vector2f pos, sf::Color color, int count) {
+    // Adding particles from the position pos, colored - @color, count - particle number
+    void addParticles(Vector2f pos, Color color, int count) {
         for (int i = 0; i < count; ++i) {
             Particle p;
             p.position = pos;
-            float angle = static_cast<float>(std::rand() % 360) * 3.14159f / 180.f;
-            float speed = (std::rand() % 50 + 50) / 100.f; // от 0.5 до 1.0
-            p.velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
-            p.lifetime = 1.0f + (std::rand() % 100) / 100.f; // от 1 до 2 секунд
+            float angle = static_cast<float>(rand() % 360) * 3.14159f / 180.f;
+            float speed = (rand() % 50 + 50) / 100.f; // от 0.5 до 1.0
+            p.velocity = Vector2f(cos(angle) * speed, sin(angle) * speed);
+            p.lifetime = 1.0f + (rand() % 100) / 100.f; // от 1 до 2 секунд
             p.color = color;
             particles.push_back(p);
         }
     }
 
-    // Обновляем частицы
+    // Renewing the particles
     void update(float dt) {
         for (auto it = particles.begin(); it != particles.end(); ) {
             it->lifetime -= dt;
             if (it->lifetime <= 0)
                 it = particles.erase(it);
             else {
-                it->velocity.y += 9.8f * dt; // гравитация
+                it->velocity.y += 9.8f * dt; // gravity
                 it->position += it->velocity;
                 ++it;
             }
@@ -107,14 +120,14 @@ public:
     }
 
     // Отрисовываем частицы
-    void draw(sf::RenderWindow& window) {
-        sf::CircleShape circle;
+    void draw(RenderWindow& window) {
+        CircleShape circle;
         circle.setRadius(2.0f);
         circle.setOrigin(2.0f, 2.0f);
         for (auto& p : particles) {
             circle.setPosition(p.position);
-            sf::Color col = p.color;
-            col.a = static_cast<sf::Uint8>(255 * (p.lifetime / 2.0f));
+            Color col = p.color;
+            col.a = static_cast<Uint8>(255 * (p.lifetime / 2.0f));
             circle.setFillColor(col);
             window.draw(circle);
         }
@@ -126,10 +139,10 @@ public:
 // ---------------------------
 class TetrisGame {
 public:
-    TetrisGame() : grid(gridHeight, std::vector<int>(gridWidth, -1)) {
-        std::srand(static_cast<unsigned>(std::time(nullptr)));
+    TetrisGame() : grid(gridHeight, vector<int>(gridWidth, -1)) {
+        srand(static_cast<unsigned>(time(nullptr)));
         // Инициализируем следующий элемент
-        nextPiece = std::rand() % 7;
+        nextPiece = rand() % 7;
         nextRotation = 0;
         nextColor = tetroColors[nextPiece];
         spawnNewPiece();
@@ -141,17 +154,17 @@ public:
     }
 
     // Игровая сетка: -1, если клетка пуста; иначе индекс фигуры (для цвета)
-    std::vector<std::vector<int>> grid;
+    vector<vector<int>> grid;
     int currentX = gridWidth / 2 - 2;
     int currentY = 0;
     int currentPiece = 0; // индекс текущей фигуры [0,6]
     int currentRotation = 0;
-    sf::Color currentColor;
+    Color currentColor;
 
     // Для превью следующей фигуры
     int nextPiece;
     int nextRotation;
-    sf::Color nextColor;
+    Color nextColor;
 
     float fallTimer;   // таймер падения
     float fallDelay;   // задержка между падениями
@@ -206,7 +219,7 @@ public:
             if (line) {
                 // Эффект частиц для очищаемой линии
                 for (int x = 0; x < gridWidth; ++x) {
-                    sf::Vector2f pos(fieldOffsetX + x * blockSize + blockSize / 2.f,
+                    Vector2f pos(fieldOffsetX + x * blockSize + blockSize / 2.f,
                         fieldOffsetY + y * blockSize + blockSize / 2.f);
                     particleSystem.addParticles(pos, tetroColors[grid[y][x]], 20);
                 }
@@ -214,7 +227,7 @@ public:
                 for (int ty = y; ty > 0; --ty) {
                     grid[ty] = grid[ty - 1];
                 }
-                grid[0] = std::vector<int>(gridWidth, -1);
+                grid[0] = vector<int>(gridWidth, -1);
                 linesCleared++;
             }
         }
@@ -239,7 +252,7 @@ public:
         currentX = gridWidth / 2 - 2;
         currentY = 0;
         // Генерируем новый "next" элемент
-        nextPiece = std::rand() % 7;
+        nextPiece = rand() % 7;
         nextRotation = 0;
         nextColor = tetroColors[nextPiece];
         // Если новая фигура не помещается – игра окончена
@@ -266,23 +279,23 @@ public:
     }
 
     // Обработка ввода: движение, поворот, ускоренное падение
-    void handleInput(const sf::Event& event) {
+    void handleInput(const Event& event) {
         if (gameOver) return; // Если игра окончена, не обрабатываем ввод
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Left) {
+        if (event.type == Event::KeyPressed) {
+            if (event.key.code == Keyboard::Left) {
                 if (doesPieceFit(currentPiece, currentRotation, currentX - 1, currentY))
                     currentX--;
             }
-            else if (event.key.code == sf::Keyboard::Right) {
+            else if (event.key.code == Keyboard::Right) {
                 if (doesPieceFit(currentPiece, currentRotation, currentX + 1, currentY))
                     currentX++;
             }
-            else if (event.key.code == sf::Keyboard::Up) {
+            else if (event.key.code == Keyboard::Up) {
                 int newRotation = (currentRotation + 1) % 4;
                 if (doesPieceFit(currentPiece, newRotation, currentX, currentY))
                     currentRotation = newRotation;
             }
-            else if (event.key.code == sf::Keyboard::Down) {
+            else if (event.key.code == Keyboard::Down) {
                 if (doesPieceFit(currentPiece, currentRotation, currentX, currentY + 1))
                     currentY++;
             }
@@ -290,14 +303,14 @@ public:
     }
 
     // Отрисовка игрового поля, текущей фигуры и системы частиц
-    void draw(sf::RenderWindow& window) {
-        sf::RectangleShape rect(sf::Vector2f(blockSize - 1, blockSize - 1));
+    void draw(RenderWindow& window) {
+        RectangleShape rect(Vector2f(blockSize - 1, blockSize - 1));
         // Отрисовка сетки
         for (int y = 0; y < gridHeight; ++y) {
             for (int x = 0; x < gridWidth; ++x) {
                 rect.setPosition(fieldOffsetX + x * blockSize, fieldOffsetY + y * blockSize);
                 if (grid[y][x] == -1) {
-                    rect.setFillColor(sf::Color(40, 40, 40));
+                    rect.setFillColor(Color(40, 40, 40));
                 }
                 else {
                     rect.setFillColor(tetroColors[grid[y][x]]);
@@ -312,7 +325,7 @@ public:
                 if (tetromino[currentPiece][index] == 'X') {
                     int gx = currentX + px;
                     int gy = currentY + py;
-                    sf::RectangleShape block(sf::Vector2f(blockSize - 1, blockSize - 1));
+                    RectangleShape block(Vector2f(blockSize - 1, blockSize - 1));
                     block.setPosition(fieldOffsetX + gx * blockSize, fieldOffsetY + gy * blockSize);
                     block.setFillColor(currentColor);
                     window.draw(block);
@@ -326,18 +339,18 @@ public:
     }
 
     // Отрисовка превью следующей фигуры в специальном окне справа
-    void drawNextPiece(sf::RenderWindow& window) {
+    void drawNextPiece(RenderWindow& window) {
         int previewX = fieldOffsetX + gridWidth * blockSize + 50;
         int previewY = fieldOffsetY + 50;
         // Рисуем область превью с рамкой
-        sf::RectangleShape previewArea(sf::Vector2f(4 * blockSize, 4 * blockSize));
+        RectangleShape previewArea(Vector2f(4 * blockSize, 4 * blockSize));
         previewArea.setPosition(previewX, previewY);
-        previewArea.setFillColor(sf::Color(30, 30, 30));
+        previewArea.setFillColor(Color(30, 30, 30));
         previewArea.setOutlineThickness(2);
-        previewArea.setOutlineColor(sf::Color::White);
+        previewArea.setOutlineColor(Color::White);
         window.draw(previewArea);
         // Рисуем следующую фигуру внутри области
-        sf::RectangleShape previewBlock(sf::Vector2f(blockSize - 1, blockSize - 1));
+        RectangleShape previewBlock(Vector2f(blockSize - 1, blockSize - 1));
         for (int px = 0; px < 4; ++px) {
             for (int py = 0; py < 4; ++py) {
                 int index = rotate(px, py, nextRotation);
@@ -357,32 +370,32 @@ public:
 // Главная функция
 // ---------------------------
 int main() {
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Tetris with SFML", sf::Style::Close);
+    RenderWindow window(VideoMode(windowWidth, windowHeight), "Tetris with SFML", Style::Close);
     window.setFramerateLimit(60);
 
     TetrisGame game;
 
     // Загрузка шрифта (файл sansation.ttf должен быть в рабочей папке)
-    sf::Font font;
+    Font font;
     if (!font.loadFromFile("sansation.ttf")) {
         // Если шрифт не найден, текст не будет отображаться
     }
     // Текст для отображения счета и комбо
-    sf::Text scoreText;
+    Text scoreText;
     scoreText.setFont(font);
     scoreText.setCharacterSize(20);
-    scoreText.setFillColor(sf::Color::White);
+    scoreText.setFillColor(Color::White);
     scoreText.setPosition(fieldOffsetX + gridWidth * blockSize + 50, fieldOffsetY + 200);
 
     float gameOverTimer = 0; // для анимации надписи Game Over
 
-    sf::Clock clock;
+    Clock clock;
     while (window.isOpen()) {
         float dt = clock.restart().asSeconds();
 
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed)
                 window.close();
             game.handleInput(event);
         }
@@ -393,29 +406,29 @@ int main() {
             gameOverTimer += dt;
 
         // Обновляем текст счета и комбо
-        std::stringstream ss;
+        stringstream ss;
         ss << "Score: " << game.score << "\nLines Combo: " << game.combo;
         scoreText.setString(ss.str());
 
-        window.clear(sf::Color(20, 20, 20));
+        window.clear(Color(20, 20, 20));
         game.draw(window);
         window.draw(scoreText);
 
         // Если игра окончена, отображаем анимированное сообщение Game Over
         if (game.gameOver && font.getInfo().family != "") {
-            sf::Text gameOverText;
+            Text gameOverText;
             gameOverText.setFont(font);
             gameOverText.setString("GAME OVER");
             gameOverText.setCharacterSize(60);
-            gameOverText.setFillColor(sf::Color::Red);
-            gameOverText.setStyle(sf::Text::Bold);
+            gameOverText.setFillColor(Color::Red);
+            gameOverText.setStyle(Text::Bold);
             // Центрирование текста
-            sf::FloatRect textRect = gameOverText.getLocalBounds();
+            FloatRect textRect = gameOverText.getLocalBounds();
             gameOverText.setOrigin(textRect.left + textRect.width / 2.0f,
                 textRect.top + textRect.height / 2.0f);
             gameOverText.setPosition(windowWidth / 2.0f, windowHeight / 2.0f);
             // Анимация: пульсация
-            float scale = 1.0f + 0.2f * std::sin(5 * gameOverTimer);
+            float scale = 1.0f + 0.2f * sin(5 * gameOverTimer);
             gameOverText.setScale(scale, scale);
             window.draw(gameOverText);
         }
