@@ -89,4 +89,4 @@ Join us, explore the possibilities, experiment with the code and make your own i
 ---
 
 *Author: [Schreiry (David Greve)]*  
-*♪ Date: 2025-02-14 ♪
+* Date: 2025-02-14 *
