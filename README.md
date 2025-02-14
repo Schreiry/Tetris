@@ -4,9 +4,13 @@
 > I wish, I try, to learn all subtleties of language - C++, computer science and architecture, processor logic, I want to work with SCADA & IOT. I am attracted to it. 
 > I do not study programming by seven-mile steps, rather by steps and that is less than a verst. And sometimes it is not pleasant, remembering the capitalist rule. Time should work for us.
 
+----
+Available Annotations:
 
+- [English version] - the current version you are currently on
+- [Russian version](./TetRu.md)
+----
 
----
 
 ### Architecture and key components
 
