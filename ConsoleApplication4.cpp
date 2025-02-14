@@ -68,62 +68,78 @@ array<Color, 8> tetroColors =
 // Calculates index (0..15) for a block in 4x4 grid after rotation
 // ---------------------------
 int rotate(int px, int py, int r) {
+	
     switch (r % 4) {
+	    
     case 0: return py * 4 + px;           // 0 degrees
     case 1: return 12 + py - (px * 4);      // 90 degrees
     case 2: return 15 - (py * 4) - px;      // 180 degrees
     case 3: return 3 - py + (px * 4);       // 270 degrees
+	    
     }
+
+	
     return 0;
 }
 
 // ---------------------------
 // Structure for particle system (comet tail effect)
 // ---------------------------
+
 struct Particle {
+
     Vector2f position;
     Vector2f velocity;
     float lifetime;   // lifespan in seconds
     Color color;
+
 };
 
 class ParticleSystem {
+
 public:
+
     vector<Particle> particles;
 
-    // Adding particles from the position pos, colored - @color, count - particle number
+    // Adding particles from the position pos, colored - @color, count - particle number.
     void addParticles(Vector2f pos, Color color, int count) {
         for (int i = 0; i < count; ++i) {
             Particle p;
             p.position = pos;
             float angle = static_cast<float>(rand() % 360) * 3.14159f / 180.f;
-            float speed = (rand() % 50 + 50) / 100.f; // от 0.5 до 1.0
+            float speed = (rand() % 50 + 50) / 100.f; // 0.5 to 1.0.
             p.velocity = Vector2f(cos(angle) * speed, sin(angle) * speed);
-            p.lifetime = 1.0f + (rand() % 100) / 100.f; // от 1 до 2 секунд
+            p.lifetime = 1.0f + (rand() % 100) / 100.f; // 1 to 2 seconds.
             p.color = color;
             particles.push_back(p);
+		
         }
     }
 
-    // Renewing the particles
+    // Renewing the particles.
     void update(float dt) {
+	    
         for (auto it = particles.begin(); it != particles.end(); ) {
+		
             it->lifetime -= dt;
             if (it->lifetime <= 0)
                 it = particles.erase(it);
+		    
             else {
-                it->velocity.y += 9.8f * dt; // gravity
+                it->velocity.y += 9.8f * dt; // gravity.
                 it->position += it->velocity;
                 ++it;
             }
         }
     }
 
-    // Отрисовываем частицы
+    // Draw the particles.
     void draw(RenderWindow& window) {
+	    
         CircleShape circle;
         circle.setRadius(2.0f);
         circle.setOrigin(2.0f, 2.0f);
+	    
         for (auto& p : particles) {
             circle.setPosition(p.position);
             Color col = p.color;
@@ -135,53 +151,64 @@ public:
 };
 
 // ---------------------------
-// Класс игры Tetris
+// Tetris Game Class.
 // ---------------------------
+
 class TetrisGame {
+
 public:
     TetrisGame() : grid(gridHeight, vector<int>(gridWidth, -1)) {
+	    
         srand(static_cast<unsigned>(time(nullptr)));
-        // Инициализируем следующий элемент
+        // Инициализируем следующий элемент.
+	    
         nextPiece = rand() % 7;
         nextRotation = 0;
         nextColor = tetroColors[nextPiece];
         spawnNewPiece();
         fallTimer = 0;
-        fallDelay = 0.5f; // время между падениями
+        fallDelay = 0.5f; // time between falls.
         score = 0;
         combo = 0;
         gameOver = false;
+	    
     }
 
-    // Игровая сетка: -1, если клетка пуста; иначе индекс фигуры (для цвета)
+    // Game grid: -1 if the cell is empty; otherwise figure index (for color).
     vector<vector<int>> grid;
     int currentX = gridWidth / 2 - 2;
     int currentY = 0;
-    int currentPiece = 0; // индекс текущей фигуры [0,6]
+    int currentPiece = 0; // index of the current figure [0,6].
     int currentRotation = 0;
     Color currentColor;
 
-    // Для превью следующей фигуры
+    // To preview the following figure.
     int nextPiece;
     int nextRotation;
     Color nextColor;
 
-    float fallTimer;   // таймер падения
-    float fallDelay;   // задержка между падениями
+    float fallTimer;   
+    float fallDelay;   
 
     int score;
     int combo;
 
-    bool gameOver;     // флаг проигрыша
+    bool gameOver;     // a losing flag that doesn't work yet,
+		//like a lot of things that canon says should be and work ) .
 
-    ParticleSystem particleSystem; // система частиц
 
-    // Проверка, помещается ли фигура в указанной позиции
+    ParticleSystem particleSystem; // particle system.
+
+    // Check if the figure fits in the specified position.
     bool doesPieceFit(int piece, int rotation, int posX, int posY) {
+	    
         for (int px = 0; px < 4; ++px) {
+		
             for (int py = 0; py < 4; ++py) {
+		    
                 int index = rotate(px, py, rotation);
                 if (tetromino[piece][index] == 'X') {
+			
                     int gx = posX + px;
                     int gy = posY + py;
                     if (gx < 0 || gx >= gridWidth || gy >= gridHeight)
@@ -194,36 +221,44 @@ public:
         return true;
     }
 
-    // Фиксируем фигуру и объединяем её с сеткой
+    // Fix the shape and merge it with the grid.
     void lockPiece() {
-        // За размещение фигуры начисляем 5 очков
+	    
+        // You get 5 points for placing the figure.
         score += 5;
         for (int px = 0; px < 4; ++px) {
+		
             for (int py = 0; py < 4; ++py) {
+		    
                 int index = rotate(px, py, currentRotation);
                 if (tetromino[currentPiece][index] == 'X') {
+			
                     int gx = currentX + px;
                     int gy = currentY + py;
                     if (gy >= 0 && gy < gridHeight && gx >= 0 && gx < gridWidth)
-                        grid[gy][gx] = currentPiece; // сохраняем индекс для цвета
+                        grid[gy][gx] = currentPiece; // save the index for the color.
                 }
             }
         }
-        // Проверяем заполненные строки
+        // Checking the filled lines.
         int linesCleared = 0;
         for (int y = 0; y < gridHeight; ++y) {
+		
             bool line = true;
             for (int x = 0; x < gridWidth; ++x) {
+		    
                 if (grid[y][x] == -1) { line = false; break; }
             }
             if (line) {
-                // Эффект частиц для очищаемой линии
+		    
+                // Particle effect for the line to be cleaned.
                 for (int x = 0; x < gridWidth; ++x) {
+			
                     Vector2f pos(fieldOffsetX + x * blockSize + blockSize / 2.f,
                         fieldOffsetY + y * blockSize + blockSize / 2.f);
                     particleSystem.addParticles(pos, tetroColors[grid[y][x]], 20);
                 }
-                // Удаляем строку и сдвигаем всё вниз
+                // We delete the line and move everything down.
                 for (int ty = y; ty > 0; --ty) {
                     grid[ty] = grid[ty - 1];
                 }
@@ -233,42 +268,47 @@ public:
         }
         if (linesCleared > 0) {
             combo++;
-            score += 125 * linesCleared; // 125 очков за каждую очищенную строку
+            score += 125 * linesCleared; // 125 points for each line cleared.
         }
+		
         else {
             combo = 0;
         }
         spawnNewPiece();
     }
 
-    // Спавн новой фигуры с использованием превью следующей
-    void spawnNewPiece() {
-        // Если игра уже окончена, не продолжаем
+    // Spavn a new shape using preview of the next one
+    void spawnNewPiece( ) {
+        // If the game is already over, do not continue.
         if (gameOver) return;
-        // Берем следующий элемент как текущий
+        // Take the next element as the current element
         currentPiece = nextPiece;
         currentRotation = nextRotation; // обычно 0
         currentColor = nextColor;
         currentX = gridWidth / 2 - 2;
         currentY = 0;
-        // Генерируем новый "next" элемент
+        // Generate a new ‘next’ element
         nextPiece = rand() % 7;
         nextRotation = 0;
         nextColor = tetroColors[nextPiece];
-        // Если новая фигура не помещается – игра окончена
+	    
+        // If a new piece does not fit - game over
         if (!doesPieceFit(currentPiece, currentRotation, currentX, currentY)) {
             gameOver = true;
         }
     }
 
-    // Обновление логики игры (падение фигур и система частиц)
+    // Updating the game logic (falling pieces and particle system)
     void update(float dt) {
+	    
         if (!gameOver) {
             fallTimer += dt;
+		
             if (fallTimer >= fallDelay) {
                 if (doesPieceFit(currentPiece, currentRotation, currentX, currentY + 1)) {
                     currentY++;
                 }
+			
                 else {
                     lockPiece();
                 }
@@ -278,15 +318,20 @@ public:
         particleSystem.update(dt);
     }
 
-    // Обработка ввода: движение, поворот, ускоренное падение
+    // Input processing: motion, rotation, accelerated drop
     void handleInput(const Event& event) {
-        if (gameOver) return; // Если игра окончена, не обрабатываем ввод
+	    
+        if (gameOver) return; // If the game is over, do not process the input
+	    
         if (event.type == Event::KeyPressed) {
+		
             if (event.key.code == Keyboard::Left) {
+		    
                 if (doesPieceFit(currentPiece, currentRotation, currentX - 1, currentY))
                     currentX--;
             }
             else if (event.key.code == Keyboard::Right) {
+		    
                 if (doesPieceFit(currentPiece, currentRotation, currentX + 1, currentY))
                     currentX++;
             }
@@ -302,12 +347,15 @@ public:
         }
     }
 
-    // Отрисовка игрового поля, текущей фигуры и системы частиц
+    // Drawing of the playing field, current figure and particle system
     void draw(RenderWindow& window) {
+	    
         RectangleShape rect(Vector2f(blockSize - 1, blockSize - 1));
-        // Отрисовка сетки
+        // Drawing the grid
         for (int y = 0; y < gridHeight; ++y) {
+		
             for (int x = 0; x < gridWidth; ++x) {
+		    
                 rect.setPosition(fieldOffsetX + x * blockSize, fieldOffsetY + y * blockSize);
                 if (grid[y][x] == -1) {
                     rect.setFillColor(Color(40, 40, 40));
@@ -318,10 +366,13 @@ public:
                 window.draw(rect);
             }
         }
-        // Отрисовка текущей фигуры
+        // Draw the current figure
         for (int px = 0; px < 4; ++px) {
+		
             for (int py = 0; py < 4; ++py) {
+		    
                 int index = rotate(px, py, currentRotation);
+		    
                 if (tetromino[currentPiece][index] == 'X') {
                     int gx = currentX + px;
                     int gy = currentY + py;
@@ -332,14 +383,15 @@ public:
                 }
             }
         }
-        // Отрисовка системы частиц
+        // Drawing of the particle system
         particleSystem.draw(window);
-        // Отрисовка превью следующей фигуры
+        // Draw a preview of the next shape
         drawNextPiece(window);
     }
 
-    // Отрисовка превью следующей фигуры в специальном окне справа
+    // Draw a preview of the next figure in a special window on the right side of the screen
     void drawNextPiece(RenderWindow& window) {
+	    
         int previewX = fieldOffsetX + gridWidth * blockSize + 50;
         int previewY = fieldOffsetY + 50;
         // Рисуем область превью с рамкой
@@ -352,7 +404,9 @@ public:
         // Рисуем следующую фигуру внутри области
         RectangleShape previewBlock(Vector2f(blockSize - 1, blockSize - 1));
         for (int px = 0; px < 4; ++px) {
+		
             for (int py = 0; py < 4; ++py) {
+		    
                 int index = rotate(px, py, nextRotation);
                 if (tetromino[nextPiece][index] == 'X') {
                     previewBlock.setPosition(previewX + px * blockSize, previewY + py * blockSize);
@@ -361,13 +415,11 @@ public:
                 }
             }
         }
-        // Рисуем надпись "Next"
-        // (Предполагается, что шрифт загружен вне этого метода)
     }
 };
 
 // ---------------------------
-// Главная функция
+// Main function
 // ---------------------------
 int main() {
     RenderWindow window(VideoMode(windowWidth, windowHeight), "Tetris with SFML", Style::Close);
@@ -375,19 +427,16 @@ int main() {
 
     TetrisGame game;
 
-    // Загрузка шрифта (файл sansation.ttf должен быть в рабочей папке)
     Font font;
     if (!font.loadFromFile("sansation.ttf")) {
-        // Если шрифт не найден, текст не будет отображаться
     }
-    // Текст для отображения счета и комбо
     Text scoreText;
     scoreText.setFont(font);
     scoreText.setCharacterSize(20);
     scoreText.setFillColor(Color::White);
     scoreText.setPosition(fieldOffsetX + gridWidth * blockSize + 50, fieldOffsetY + 200);
 
-    float gameOverTimer = 0; // для анимации надписи Game Over
+    float gameOverTimer = 0; 
 
     Clock clock;
     while (window.isOpen()) {
@@ -395,6 +444,7 @@ int main() {
 
         Event event;
         while (window.pollEvent(event)) {
+		
             if (event.type == Event::Closed)
                 window.close();
             game.handleInput(event);
@@ -402,10 +452,11 @@ int main() {
 
         if (!game.gameOver)
             game.update(dt);
+		
         else
             gameOverTimer += dt;
 
-        // Обновляем текст счета и комбо
+        // Update the text of the bill and combo - doesn't work 
         stringstream ss;
         ss << "Score: " << game.score << "\nLines Combo: " << game.combo;
         scoreText.setString(ss.str());
@@ -414,20 +465,22 @@ int main() {
         game.draw(window);
         window.draw(scoreText);
 
-        // Если игра окончена, отображаем анимированное сообщение Game Over
+        // If the game is over, display an animated Game Over message - does not work 
+	    
         if (game.gameOver && font.getInfo().family != "") {
+		
             Text gameOverText;
             gameOverText.setFont(font);
             gameOverText.setString("GAME OVER");
             gameOverText.setCharacterSize(60);
             gameOverText.setFillColor(Color::Red);
             gameOverText.setStyle(Text::Bold);
-            // Центрирование текста
+            // Text centring - doesn't work
             FloatRect textRect = gameOverText.getLocalBounds();
             gameOverText.setOrigin(textRect.left + textRect.width / 2.0f,
                 textRect.top + textRect.height / 2.0f);
             gameOverText.setPosition(windowWidth / 2.0f, windowHeight / 2.0f);
-            // Анимация: пульсация
+            // Animation: ripple - not working
             float scale = 1.0f + 0.2f * sin(5 * gameOverTimer);
             gameOverText.setScale(scale, scale);
             window.draw(gameOverText);
@@ -435,5 +488,7 @@ int main() {
 
         window.display();
     }
+
+	
     return 0;
 }
