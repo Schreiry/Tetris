@@ -8,3 +8,10 @@ C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\libpng16d.dll
 C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\brotlidec.dll
 C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\brotlicommon.dll
 C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleA.69da18d9\x64\Debug\ConsoleA.8BEF81C0.Up2Date
+C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\sfml-audio-d-2.dll
+C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\OpenAL32.dll
+C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\vorbisenc.dll
+C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\vorbis.dll
+C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\ogg.dll
+C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\vorbisfile.dll
+C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\FLAC.dll
