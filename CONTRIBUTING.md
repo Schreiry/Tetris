@@ -42,4 +42,4 @@
    ### Time Commitment: 
    - Hours/week available
 
-[Russian version](./)
+[Russian version](./CONTRIBUTINGru.md)
