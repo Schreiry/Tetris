@@ -8,7 +8,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
-#include <iostream>  // Для std::cerr
+#include <iostream>  // For std::cerr
 
 // ----             ----
 using std::vector;
@@ -22,67 +22,67 @@ using sf::Vector2f;
 //  -------------------------
 // |     Global constants    |
 //  -------------------------
-const int blockSize = 30;         // размер одного блока (в пикселях)
-const int gridWidth = 15;         // ширина игрового поля (в блоках)
-const int gridHeight = 25;         // высота игрового поля (в блоках)
-const int fieldOffsetX = 50;      // отступ игрового поля от левого края
-const int fieldOffsetY = 50;      // отступ игрового поля от верхнего края
+const int blockSize = 30;         // size of one block (in pixels) ;
+const int gridWidth = 15;         // width of the playing field (in blocks) ;
+const int gridHeight = 25;        // height of the playing field (in blocks) ;
+const int fieldOffsetX = 50;      // indent of the playing field from the left edge ; 
+const int fieldOffsetY = 50;      // indent of the playing field from the top edge ;
 
-// Размер окна: игровое поле + область отчётов и превью
+// Window size: playing field + report and preview area .
 const int windowWidth = fieldOffsetX + gridWidth * blockSize + 200;
 const int windowHeight = fieldOffsetY + gridHeight * blockSize + 50;
 
 // ---------------------------
-// Определение фигур тетриса (4x4)
-// 'X' - заполненный блок, '.' - пустая ячейка
-// Фигуры: I, J, L, O, S, T, Z
+//Definition of Tetris pieces (4x4) ; 
+// 'X' - filled block, '.' - empty cell ; 
+// Figures: [ I ] , [ J ] , [ L ] , [ O ] , [ S ] , [ T ], [ Z ] . 
 // ---------------------------
 array<std::string, 8> tetromino =
 {
-    "....XXXX........", // A
-    ".X..XXX.........", // B
-    "..X.XXX.........", // C
-    //"...." ".XX." ".XX.", // D (закомментировано)
-    ".XX.XX..........", // E
-    "..XX.XX.........", // F
-    ".X..XX..X.......", // G
-    "XX...XX.........",  // H
+    "....XXXX........", // A ; 
+    ".X..XXX.........", // B ; 
+    "..X.XXX.........", // C ; 
+    //"...." ".XX." ".XX.", // D 
+    ".XX.XX..........", // E ; 
+    "..XX.XX.........", // F ; 
+    ".X..XX..X.......", // G ; 
+    "XX...XX.........",  // H .
 };
 
 // Палитра ярких цветов для фигур
 array<Color, 8> tetroColors =
 {
-    Color(31, 111, 235),    // A – синий (rgb(31, 111, 235))
-    Color(121, 160, 193),   // B – сизый (rgb(121, 160, 193))
-    Color(255, 165, 0),     // C – оранжевый
-    //Color(0, 0, 0),       // D – черный (закомментирован)
-    Color(255, 255, 0),     // O – жёлтый
-    Color(38, 166, 65),     // S – лаймовый (rgb(38, 166, 65))
-    Color(148, 0, 211),     // T – фиолетовый
-    Color(243, 75, 125)     // Z – красный (rgb(243, 75, 125))
+    Color(31, 111, 235),    // A – Blue (rgb(31, 111, 235)) ; 
+    Color(121, 160, 193),   // B – сизый(dove-colored) (rgb(121, 160, 193)) ; 
+    Color(255, 165, 0),     // C – Orange ; 
+    //Color(0, 0, 0),       // D – Black ; 
+    Color(255, 255, 0),     // O – Yellow ; 
+    Color(38, 166, 65),     // S – Lime (rgb(38, 166, 65)) ; 
+    Color(148, 0, 211),     // T – Violet ; 
+    Color(243, 75, 125)     // Z – Red (rgb(243, 75, 125)) .
 };
 
 // ---------------------------
-// Функция поворота фигуры
-// Вычисляет индекс (0..15) для блока в сетке 4x4 после поворота
+// Rotate figure function .
+// Calculates the index (0..15) for a block in a 4x4 grid after rotation .
 // ---------------------------
 int rotate(int px, int py, int r) {
     switch (r % 4) {
-    case 0: return py * 4 + px;           // 0 градусов
-    case 1: return 12 + py - (px * 4);      // 90 градусов
-    case 2: return 15 - (py * 4) - px;      // 180 градусов
-    case 3: return 3 - py + (px * 4);       // 270 градусов
+    case 0: return py * 4 + px;           // 0° degrees
+    case 1: return 12 + py - (px * 4);      // 90° degrees
+    case 2: return 15 - (py * 4) - px;      // 180° degrees
+    case 3: return 3 - py + (px * 4);       // 270° degrees
     }
     return 0;
 }
 
 // ---------------------------
-// Структура для системы частиц (эффект хвоста кометы)
+// Structure for a particle system (comet tail effect)
 // ---------------------------
 struct Particle {
     Vector2f position;
     Vector2f velocity;
-    float lifetime;   // время жизни (в секундах)
+    float lifetime;   // lifetime (in seconds)
     Color color;
 };
 
@@ -90,7 +90,7 @@ class ParticleSystem {
 public:
     vector<Particle> particles;
 
-    // Добавление частиц в позиции pos, заданного цвета, count - число частиц
+// Add particles at position pos, given color, count - number of particles
     void addParticles(Vector2f pos, Color color, int count) {
         for (int i = 0; i < count; ++i) {
             Particle p;
