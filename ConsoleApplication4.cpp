@@ -1,4 +1,4 @@
-﻿#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <array>
@@ -8,7 +8,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
-#include <iostream>  // For std::cerr
+#include <iostream>  
 
 // ----             ----
 using std::vector;
@@ -17,72 +17,73 @@ using std::string;
 using sf::Color;
 using sf::RenderWindow;
 using sf::Vector2f;
+using namespace sf; 
 // ----             ----
 
 //  -------------------------
 // |     Global constants    |
 //  -------------------------
-const int blockSize = 30;         // size of one block (in pixels) ;
-const int gridWidth = 15;         // width of the playing field (in blocks) ;
-const int gridHeight = 25;        // height of the playing field (in blocks) ;
-const int fieldOffsetX = 50;      // indent of the playing field from the left edge ; 
-const int fieldOffsetY = 50;      // indent of the playing field from the top edge ;
+const int blockSize = 30;         // размер одного блока (в пикселях)
+const int gridWidth = 15;         // ширина игрового поля (в блоках)
+const int gridHeight = 25;         // высота игрового поля (в блоках)
+const int fieldOffsetX = 50;      // отступ игрового поля от левого края
+const int fieldOffsetY = 50;      // отступ игрового поля от верхнего края
 
-// Window size: playing field + report and preview area .
+// Размер окна: игровое поле + область отчётов и превью
 const int windowWidth = fieldOffsetX + gridWidth * blockSize + 200;
 const int windowHeight = fieldOffsetY + gridHeight * blockSize + 50;
 
 // ---------------------------
-//Definition of Tetris pieces (4x4) ; 
-// 'X' - filled block, '.' - empty cell ; 
-// Figures: [ I ] , [ J ] , [ L ] , [ O ] , [ S ] , [ T ], [ Z ] . 
+// Определение фигур тетриса (4x4)
+// 'X' - заполненный блок, '.' - пустая ячейка
+// Фигуры: I, J, L, O, S, T, Z
 // ---------------------------
 array<std::string, 8> tetromino =
 {
-    "....XXXX........", // A ; 
-    ".X..XXX.........", // B ; 
-    "..X.XXX.........", // C ; 
-    //"...." ".XX." ".XX.", // D 
-    ".XX.XX..........", // E ; 
-    "..XX.XX.........", // F ; 
-    ".X..XX..X.......", // G ; 
-    "XX...XX.........",  // H .
+    "....XXXX........", // A
+    ".X..XXX.........", // B
+    "..X.XXX.........", // C
+    //"...." ".XX." ".XX.", // D (закомментировано)
+    ".XX.XX..........", // E
+    "..XX.XX.........", // F
+    ".X..XX..X.......", // G
+    "XX...XX.........",  // H
 };
 
 // Палитра ярких цветов для фигур
 array<Color, 8> tetroColors =
 {
-    Color(31, 111, 235),    // A – Blue (rgb(31, 111, 235)) ; 
-    Color(121, 160, 193),   // B – сизый(dove-colored) (rgb(121, 160, 193)) ; 
-    Color(255, 165, 0),     // C – Orange ; 
-    //Color(0, 0, 0),       // D – Black ; 
-    Color(255, 255, 0),     // O – Yellow ; 
-    Color(38, 166, 65),     // S – Lime (rgb(38, 166, 65)) ; 
-    Color(148, 0, 211),     // T – Violet ; 
-    Color(243, 75, 125)     // Z – Red (rgb(243, 75, 125)) .
+    Color(31, 111, 235),    // A – синий (rgb(31, 111, 235))
+    Color(121, 160, 193),   // B – сизый (rgb(121, 160, 193))
+    Color(255, 165, 0),     // C – оранжевый
+    //Color(0, 0, 0),       // D – черный (закомментирован)
+    Color(255, 255, 0),     // O – жёлтый
+    Color(38, 166, 65),     // S – лаймовый (rgb(38, 166, 65))
+    Color(148, 0, 211),     // T – фиолетовый
+    Color(243, 75, 125)     // Z – красный (rgb(243, 75, 125))
 };
 
 // ---------------------------
-// Rotate figure function .
-// Calculates the index (0..15) for a block in a 4x4 grid after rotation .
+// Функция поворота фигуры
+// Вычисляет индекс (0..15) для блока в сетке 4x4 после поворота
 // ---------------------------
 int rotate(int px, int py, int r) {
     switch (r % 4) {
-    case 0: return py * 4 + px;           // 0° degrees
-    case 1: return 12 + py - (px * 4);      // 90° degrees
-    case 2: return 15 - (py * 4) - px;      // 180° degrees
-    case 3: return 3 - py + (px * 4);       // 270° degrees
+    case 0: return py * 4 + px;           // 0 градусов
+    case 1: return 12 + py - (px * 4);      // 90 градусов
+    case 2: return 15 - (py * 4) - px;      // 180 градусов
+    case 3: return 3 - py + (px * 4);       // 270 градусов
     }
     return 0;
 }
 
 // ---------------------------
-// Structure for a particle system (comet tail effect)
+// Структура для системы частиц (эффект хвоста кометы)
 // ---------------------------
 struct Particle {
     Vector2f position;
     Vector2f velocity;
-    float lifetime;   // lifetime (in seconds)
+    float lifetime;   // время жизни (в секундах)
     Color color;
 };
 
@@ -90,7 +91,7 @@ class ParticleSystem {
 public:
     vector<Particle> particles;
 
-// Add particles at position pos, given color, count - number of particles
+    // Добавление частиц в позиции pos, заданного цвета, count - число частиц
     void addParticles(Vector2f pos, Color color, int count) {
         for (int i = 0; i < count; ++i) {
             Particle p;
@@ -277,7 +278,7 @@ public:
     }
 
     // Обработка ввода: движение, поворот, ускоренное падение
-    void handleInput(const sf::Event& event) {
+ /*   void handleInput(const sf::Event& event) {
         if (gameOver) return;
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Left) {
@@ -298,69 +299,69 @@ public:
                     currentY++;
             }
         }
-    }
+    }*/
 
     // Отрисовка игрового поля, текущей фигуры и системы частиц
     void draw(RenderWindow& window) {
-        sf::RectangleShape rect(Vector2f(blockSize - 1, blockSize - 1));
-        // Отрисовка сетки
-        for (int y = 0; y < gridHeight; ++y) {
-            for (int x = 0; x < gridWidth; ++x) {
-                rect.setPosition(fieldOffsetX + x * blockSize, fieldOffsetY + y * blockSize);
-                if (grid[y][x] == -1) {
-                    rect.setFillColor(Color(40, 40, 40));
-                }
-                else {
-                    rect.setFillColor(tetroColors[grid[y][x]]);
-                }
-                window.draw(rect);
-            }
-        }
+        //sf::RectangleShape rect(Vector2f(blockSize - 1, blockSize - 1));
+        //// Отрисовка сетки
+        //for (int y = 0; y < gridHeight; ++y) {
+        //    for (int x = 0; x < gridWidth; ++x) {
+        //        rect.setPosition(fieldOffsetX + x * blockSize, fieldOffsetY + y * blockSize);
+        //        if (grid[y][x] == -1) {
+        //            rect.setFillColor(Color(40, 40, 40));
+        //        }
+        //        else {
+        //            rect.setFillColor(tetroColors[grid[y][x]]);
+        //        }
+        //        window.draw(rect);
+        //    }
+        //}
         // Отрисовка текущей фигуры
-        for (int px = 0; px < 4; ++px) {
-            for (int py = 0; py < 4; ++py) {
-                int index = rotate(px, py, currentRotation);
-                if (tetromino[currentPiece][index] == 'X') {
-                    int gx = currentX + px;
-                    int gy = currentY + py;
-                    sf::RectangleShape block(Vector2f(blockSize - 1, blockSize - 1));
-                    block.setPosition(fieldOffsetX + gx * blockSize, fieldOffsetY + gy * blockSize);
-                    block.setFillColor(currentColor);
-                    window.draw(block);
-                }
-            }
-        }
-        // Отрисовка системы частиц
-        particleSystem.draw(window);
-        // Отрисовка превью следующей фигуры
-        drawNextPiece(window);
+        //for (int px = 0; px < 4; ++px) {
+        //    for (int py = 0; py < 4; ++py) {
+        //        int index = rotate(px, py, currentRotation);
+        //        if (tetromino[currentPiece][index] == 'X') {
+        //            int gx = currentX + px;
+        //            int gy = currentY + py;
+        //            sf::RectangleShape block(Vector2f(blockSize - 1, blockSize - 1));
+        //            block.setPosition(fieldOffsetX + gx * blockSize, fieldOffsetY + gy * blockSize);
+        //            block.setFillColor(currentColor);
+        //            window.draw(block);
+        //        }
+        //    }
+        //}
+        //// Отрисовка системы частиц
+        //particleSystem.draw(window);
+        //// Отрисовка превью следующей фигуры
+        //drawNextPiece(window);
     }
 
     // Отрисовка превью следующей фигуры в области справа
-    void drawNextPiece(RenderWindow& window) {
-        int previewX = fieldOffsetX + gridWidth * blockSize + 50;
-        int previewY = fieldOffsetY + 50;
-        // Рисуем область превью с рамкой
-        sf::RectangleShape previewArea(Vector2f(4 * blockSize, 4 * blockSize));
-        previewArea.setPosition(previewX, previewY);
-        previewArea.setFillColor(Color(30, 30, 30));
-        previewArea.setOutlineThickness(2);
-        previewArea.setOutlineColor(Color::White);
-        window.draw(previewArea);
-        // Рисуем следующую фигуру внутри области
-        sf::RectangleShape previewBlock(Vector2f(blockSize - 1, blockSize - 1));
-        for (int px = 0; px < 4; ++px) {
-            for (int py = 0; py < 4; ++py) {
-                int index = rotate(px, py, nextRotation);
-                if (tetromino[nextPiece][index] == 'X') {
-                    previewBlock.setPosition(previewX + px * blockSize, previewY + py * blockSize);
-                    previewBlock.setFillColor(nextColor);
-                    window.draw(previewBlock);
-                }
-            }
-        }
-        // Здесь можно добавить надпись "Next", если требуется
-    }
+    //void drawNextPiece(RenderWindow& window) {
+    //    int previewX = fieldOffsetX + gridWidth * blockSize + 50;
+    //    int previewY = fieldOffsetY + 50;
+    //    // Рисуем область превью с рамкой
+    //    sf::RectangleShape previewArea(Vector2f(4 * blockSize, 4 * blockSize));
+    //    previewArea.setPosition(previewX, previewY);
+    //    previewArea.setFillColor(Color(30, 30, 30));
+    //    previewArea.setOutlineThickness(2);
+    //    previewArea.setOutlineColor(Color::White);
+    //    window.draw(previewArea);
+    //    // Рисуем следующую фигуру внутри области
+    //    sf::RectangleShape previewBlock(Vector2f(blockSize - 1, blockSize - 1));
+    //    for (int px = 0; px < 4; ++px) {
+    //        for (int py = 0; py < 4; ++py) {
+    //            int index = rotate(px, py, nextRotation);
+    //            if (tetromino[nextPiece][index] == 'X') {
+    //                previewBlock.setPosition(previewX + px * blockSize, previewY + py * blockSize);
+    //                previewBlock.setFillColor(nextColor);
+    //                window.draw(previewBlock);
+    //            }
+    //        }
+    //    }
+    //    // Здесь можно добавить надпись "Next", если требуется
+    //}
 };
 
 // ---------------------------
@@ -372,23 +373,6 @@ int main() {
 
     TetrisGame game;
 
-    // Загрузка шрифта
-    sf::Font font;
-    // Пытаемся загрузить шрифт из файла "sansation.ttf"
-    if (!font.loadFromFile("sansation.ttf")) {
-        // Если не удалось, используем запасной путь в зависимости от платформы
-#ifdef _WIN32
-        if (!font.loadFromFile("C:/Windows/Fonts/arial.ttf")) {
-            std::cerr << "Ошибка: не удалось загрузить шрифт sansation.ttf или Arial!" << std::endl;
-        }
-#elif defined(__linux__)
-        if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")) {
-            std::cerr << "Ошибка: не удалось загрузить шрифт sansation.ttf или DejaVuSans!" << std::endl;
-        }
-#else
-        std::cerr << "Ошибка: не удалось загрузить шрифт sansation.ttf!" << std::endl;
-#endif
-    }
 
     // Настройка текста для отображения счета и комбо
     sf::Text scoreText;
@@ -425,23 +409,23 @@ int main() {
         window.draw(scoreText);
 
         // Если игра окончена, отображаем анимированное сообщение "GAME OVER"
-        if (game.gameOver && font.getInfo().family != "") {
-            sf::Text gameOverText;
-            gameOverText.setFont(font);
-            gameOverText.setString("GAME OVER");
-            gameOverText.setCharacterSize(60);
-            gameOverText.setFillColor(Color::Red);
-            gameOverText.setStyle(sf::Text::Bold);
-            // Центрируем текст
-            sf::FloatRect textRect = gameOverText.getLocalBounds();
-            gameOverText.setOrigin(textRect.left + textRect.width / 2.0f,
-                textRect.top + textRect.height / 2.0f);
-            gameOverText.setPosition(windowWidth / 2.0f, windowHeight / 2.0f);
-            // Анимация пульсации
-            float scale = 1.0f + 0.2f * sin(5 * gameOverTimer);
-            gameOverText.setScale(scale, scale);
-            window.draw(gameOverText);
-        }
+        //if (game.gameOver && font.getInfo().family != "") {
+        //    sf::Text gameOverText;
+        //    gameOverText.setFont(font);
+        //    gameOverText.setString("GAME OVER");
+        //    gameOverText.setCharacterSize(60);
+        //    gameOverText.setFillColor(Color::Red);
+        //    gameOverText.setStyle(sf::Text::Bold);
+        //    // Центрируем текст
+        //    sf::FloatRect textRect = gameOverText.getLocalBounds();
+        //    gameOverText.setOrigin(textRect.left + textRect.width / 2.0f,
+        //        textRect.top + textRect.height / 2.0f);
+        //    gameOverText.setPosition(windowWidth / 2.0f, windowHeight / 2.0f);
+        //    // Анимация пульсации
+        //    float scale = 1.0f + 0.2f * sin(5 * gameOverTimer);
+        //    gameOverText.setScale(scale, scale);
+        //    window.draw(gameOverText);
+        //}
 
         window.display();
     }
