@@ -1,10 +1,19 @@
-# Tetris using SFML
+<div align="center">
+  <h1>Tetris using SFML Multimedia Library</h1>
+</div>
 
-> Welcome to the repository of the SFML Tetris project, a modern and elegant take on the classic game. The game itself is not directly innovative, both in idea and implementation . Sometimes with its pharisaic way of thinking, looking at the modern ‘IT’ industry, involuntarily want to renounce it and go into a free, personal study of this science, deepening and understanding every detail, every aspect of the subject. It is a pity that we have forgotten that a programmer used to be a scientist, and now every fifth or ninth person is thinking of entering IT. This is ridiculous, some will say, it is evolution and development that has brought us to this point. I have a counter argument to such grumbling, physics is also evolving, its origins go deep into the history of civilisation, but the physicist is still the one who has learned many aspects of it, not just how to use Docker and frameworks. I hope you have caught my thought, and if not, then it is not worth continuing to read the rest of the essay.  
-> I wish, I try, to learn all subtleties of language - C++, computer science and architecture, processor logic, I want to work with SCADA & IOT. I am attracted to it. 
-> I do not study programming by seven-mile steps, rather by steps and that is less than a verst. And sometimes it is not pleasant, remembering the capitalist rule. Time should work for us.
+> [!NOTE]
+>   Welcome to the repository of the Tetris project built with the SFML library. The game itself is not directly innovative, both in idea and implementation.
 
-----
+>  Sometimes with my pharisaical way of thinking, looking at the modern “IT” industry, one can't help but want to renounce it and go into a free, personal study of this science, delving deeper and comprehending every detail, every aspect of the subject. It is a pity that we have forgotten that a programmer used to be a scientist, and now every fifth or ninth person is thinking about going into IT. It's ridiculous, some will say, it's evolution and development that has brought us to this point. I have a counterargument to such grumbling: physics is also evolving, its origins go deep into the history of civilization, but a physicist is still someone who has studied many aspects of it, not just how to use Docker and frameworks. I hope you caught my point, and if not, it's not worth continuing to read the rest of the essay.  
+> I want to, try to, learn the ins and outs of the language - C++, computer science and architecture, processor logic.
+> I don't study programming by seven-mile steps, rather by steps, which is less than a versta. And sometimes it's not very pleasant, remembering the capitalist rule. Time should work for us.
+
+> [!NOTE]
+> This project is not just a collection of code lines, but a living embodiment of the path of knowledge, an open book, through the pages of which you can trace the stages of formation of a programmer in love with C++. It is a kind of odyssey, where each step is a new chapter filled with discoveries and overcoming.
+
+
+
 Available Annotations:
 
 - [English version] - the current version you are currently on
