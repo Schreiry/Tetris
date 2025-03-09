@@ -1,12 +1,254 @@
 ﻿  ConsoleApplication4.cpp
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(309,77): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(309,47): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(327,83): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(327,52): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(345,43): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(345,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(356,82): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(356,55): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-  ConsoleApplication4.vcxproj -> C:\Users\woter\Desktop\C++\ConsoleApplication4\x64\Debug\ConsoleApplication4.exe
-  "pwsh.exe" не является внутренней или внешней
-  командой, исполняемой программой или пакетным файлом.
+C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Exception.hpp(41,47): warning C4275: class "std::runtime_error", не являющийся dll-интерфейсом, использован в качестве базового для dll-интерфейса class "sf::Exception"
+  (компиляция исходного файла "ConsoleApplication4.cpp")
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\stdexcept(100,19):
+       см. объявление "std::runtime_error"
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Exception.hpp(41,23):
+       см. объявление "sf::Exception"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,42): error C2440: <function-style-cast>: невозможно преобразовать "initializer list" в "sf::VideoMode"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,42):
+      "sf::VideoMode::VideoMode": ни одна перегруженная функция не может преобразовать все типы аргументов
+          C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\VideoMode.hpp(61,5):
+          может быть "sf::VideoMode::VideoMode(sf::Vector2u,unsigned int)"
+              C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,42):
+              "sf::VideoMode::VideoMode(sf::Vector2u,unsigned int)": невозможно преобразовать аргумент 1 из "const int" в "sf::Vector2u"
+                  C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                  "sf::Vector2<unsigned int>::Vector2": ни одна перегруженная функция не может преобразовать все типы аргументов
+                      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Vector2.hpp(205,1):
+                      может быть "sf::Vector2<unsigned int>::Vector2(sf::Vector2<unsigned int> &&)"
+                          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                          "sf::Vector2<unsigned int>::Vector2(sf::Vector2<unsigned int> &&)": невозможно преобразовать аргумент 1 из "const int" в "sf::Vector2<unsigned int> &&"
+                              C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                              Причина: невозможно преобразовать "const int" в "sf::Vector2<unsigned int>"
+                              C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                              Для преобразования требуется второй оператор пользовательского преобразования или конструктор
+                      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Vector2.hpp(205,1):
+                      или       "sf::Vector2<unsigned int>::Vector2(const sf::Vector2<unsigned int> &)"
+                          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                          "sf::Vector2<unsigned int>::Vector2(const sf::Vector2<unsigned int> &)": невозможно преобразовать аргумент 1 из "const int" в "const sf::Vector2<unsigned int> &"
+                              C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                              Причина: невозможно преобразовать "const int" в "const sf::Vector2<unsigned int>"
+                              C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                              Для преобразования требуется второй оператор пользовательского преобразования или конструктор
+                      C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,43):
+                      при попытке сопоставить список аргументов "(const int)"
+          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,42):
+          при попытке сопоставить список аргументов "(const int, const int)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,28): error C2665: "sf::RenderWindow::RenderWindow": ни одна перегруженная функция не может преобразовать все типы аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\RenderWindow.hpp(127,5):
+      может быть "sf::RenderWindow::RenderWindow(sf::WindowHandle,const sf::ContextSettings &)"
+          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,28):
+          "sf::RenderWindow::RenderWindow(sf::WindowHandle,const sf::ContextSettings &)": невозможно преобразовать аргумент 1 из "const char [17]" в "sf::WindowHandle"
+              C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+              Типы, на которые указывают указатели, не связаны; для преобразования требуется reinterpret_cast, приведение в стиле С или приведение в стиле функции в круглых скобках
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\RenderWindow.hpp(86,5):
+      или       "sf::RenderWindow::RenderWindow(sf::VideoMode,const sf::String &,uint32_t,sf::State,const sf::ContextSettings &)"
+          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,28):
+          "sf::RenderWindow::RenderWindow(sf::VideoMode,const sf::String &,uint32_t,sf::State,const sf::ContextSettings &)": невозможно преобразовать аргумент 1 из "const char [17]" в "sf::VideoMode"
+              C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+              "sf::VideoMode::VideoMode": ни одна перегруженная функция не может преобразовать все типы аргументов
+                  C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\VideoMode.hpp(104,1):
+                  может быть "sf::VideoMode::VideoMode(sf::VideoMode &&)"
+                      C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+                      "sf::VideoMode::VideoMode(sf::VideoMode &&)": невозможно преобразовать аргумент 1 из "const char [17]" в "sf::VideoMode &&"
+                          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+                          Причина: невозможно преобразовать "const char [17]" в "sf::VideoMode"
+                          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+                          Для преобразования требуется второй оператор пользовательского преобразования или конструктор
+                  C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\VideoMode.hpp(104,1):
+                  или       "sf::VideoMode::VideoMode(const sf::VideoMode &)"
+                      C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+                      "sf::VideoMode::VideoMode(const sf::VideoMode &)": невозможно преобразовать аргумент 1 из "const char [17]" в "const sf::VideoMode &"
+                          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+                          Причина: невозможно преобразовать "const char [17]" в "const sf::VideoMode"
+                          C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+                          Для преобразования требуется второй оператор пользовательского преобразования или конструктор
+                  C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,71):
+                  при попытке сопоставить список аргументов "(const char [17])"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(13,28):
+      при попытке сопоставить список аргументов "(const char [17], sf::Style::<unnamed-enum-None>)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(23,14): error C2512: sf::Text: нет подходящего конструктора по умолчанию
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Text.hpp(56,25):
+       см. объявление "sf::Text"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(24,23): error C2065: font: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(27,15): error C2660: sf::Transformable::setPosition: функция не принимает 2 аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Transformable.hpp(70,10):
+       см. объявление "sf::Transformable::setPosition"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(27,15):
+      при попытке сопоставить список аргументов "(int, int)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(36,19): error C2512: sf::Event: нет подходящего конструктора по умолчанию
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Event.hpp(46,7):
+       см. объявление "sf::Event"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(37,23): error C2660: sf::WindowBase::pollEvent: функция не принимает 1 аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\WindowBase.hpp(226,40):
+       см. объявление "sf::WindowBase::pollEvent"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(37,23):
+      при попытке сопоставить список аргументов "(sf::Event)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ConsoleApplication4.cpp(38,23): error C2039: "type": не является членом "sf::Event".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Event.hpp(46,7):
+       см. объявление "sf::Event"
+  
+  Debug.cpp
+C:\Users\woter\Desktop\C++\ConsoleApplication4\Debug.cpp(21,44): error C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  ParticleSystem.cpp
+C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Exception.hpp(41,47): warning C4275: class "std::runtime_error", не являющийся dll-интерфейсом, использован в качестве базового для dll-интерфейса class "sf::Exception"
+  (компиляция исходного файла "ParticleSystem.cpp")
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\stdexcept(100,19):
+       см. объявление "std::runtime_error"
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Exception.hpp(41,23):
+       см. объявление "sf::Exception"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ParticleSystem.cpp(39,12): error C2660: sf::Transformable::setOrigin: функция не принимает 2 аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Transformable.hpp(115,10):
+       см. объявление "sf::Transformable::setOrigin"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\ParticleSystem.cpp(39,12):
+      при попытке сопоставить список аргументов "(float, float)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ParticleSystem.cpp(43,33): error C2039: "Uint8": не является членом "sf".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Sleep.hpp(33,11):
+       см. объявление "sf"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\ParticleSystem.cpp(43,33): error C2061: синтаксическая ошибка: идентификатор "Uint8"
+  TetrisGame.cpp
+C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Exception.hpp(41,47): warning C4275: class "std::runtime_error", не являющийся dll-интерфейсом, использован в качестве базового для dll-интерфейса class "sf::Exception"
+  (компиляция исходного файла "TetrisGame.cpp")
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.43.34808\include\stdexcept(100,19):
+       см. объявление "std::runtime_error"
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Exception.hpp(41,23):
+       см. объявление "sf::Exception"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(52,25): error C2065: fullLine: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(56,48): error C2065: y: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(55,45): error C2665: "sf::Vector2<float>::Vector2": ни одна перегруженная функция не может преобразовать все типы аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Vector2.hpp(205,1):
+      может быть "sf::Vector2<float>::Vector2(sf::Vector2<float> &&)"
+          C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(55,45):
+          "sf::Vector2<float>::Vector2(sf::Vector2<float> &&)": невозможно преобразовать аргумент 1 из "float" в "sf::Vector2<float> &&"
+              C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(55,75):
+              Причина: невозможно преобразовать "float" в "sf::Vector2<float>"
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Vector2.hpp(205,1):
+      или       "sf::Vector2<float>::Vector2(const sf::Vector2<float> &)"
+          C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(55,45):
+          "sf::Vector2<float>::Vector2(const sf::Vector2<float> &)": невозможно преобразовать аргумент 1 из "float" в "const sf::Vector2<float> &"
+              C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(55,75):
+              Причина: невозможно преобразовать "float" в "const sf::Vector2<float>"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(55,45):
+      при попытке сопоставить список аргументов "(float)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(57,85): error C2065: y: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(57,90): error C7732: expected an expression before ']'
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(61,36): error C2065: y: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(66,39): error C2065: y: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(70,25): error C2065: linesCleared: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(156,18): error C2039: "drawLineClearAnimations": не является членом "TetrisGame".
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.h(20,7):
+       см. объявление "TetrisGame"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(159,29): error C2065: lineClearAnimations: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(159,22): error C2530: anim: ссылки должны быть инициализированы
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(159,22): error C3531: anim: символ, тип которого содержит спецификатор 'auto' должен иметь инициализатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(159,27): error C2143: синтаксическая ошибка: отсутствие ";" перед ":"
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(159,48): error C2143: синтаксическая ошибка: отсутствие ";" перед ")"
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,22): error C2664: "void sf::Transformable::setPosition(sf::Vector2f)": невозможно преобразовать аргумент 1 из "int" в "sf::Vector2f"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+      "sf::Vector2<float>::Vector2": ни одна перегруженная функция не может преобразовать все типы аргументов
+          C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Vector2.hpp(205,1):
+          может быть "sf::Vector2<float>::Vector2(sf::Vector2<float> &&)"
+              C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+              "sf::Vector2<float>::Vector2(sf::Vector2<float> &&)": невозможно преобразовать аргумент 1 из "int" в "sf::Vector2<float> &&"
+                  C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+                  Причина: невозможно преобразовать "int" в "sf::Vector2<float>"
+                  C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+                  Для преобразования требуется второй оператор пользовательского преобразования или конструктор
+          C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Vector2.hpp(205,1):
+          или       "sf::Vector2<float>::Vector2(const sf::Vector2<float> &)"
+              C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+              "sf::Vector2<float>::Vector2(const sf::Vector2<float> &)": невозможно преобразовать аргумент 1 из "int" в "const sf::Vector2<float> &"
+                  C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+                  Причина: невозможно преобразовать "int" в "const sf::Vector2<float>"
+                  C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+                  Для преобразования требуется второй оператор пользовательского преобразования или конструктор
+          C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,47):
+          при попытке сопоставить список аргументов "(int)"
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Transformable.hpp(70,10):
+       см. объявление "sf::Transformable::setPosition"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(172,22):
+      при попытке сопоставить список аргументов "(int)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(174,76): error C2039: "Uint8": не является членом "sf".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\System\Sleep.hpp(33,11):
+       см. объявление "sf"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(174,76): error C2061: синтаксическая ошибка: идентификатор "Uint8"
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(185,15): error C2039: "type": не является членом "sf::Event".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Event.hpp(46,7):
+       см. объявление "sf::Event"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(186,19): error C2039: "key": не является членом "sf::Event".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Event.hpp(46,7):
+       см. объявление "sf::Event"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(186,45): error C2039: "Left": не является членом "sf::Keyboard".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Keyboard.hpp(41,11):
+       см. объявление "sf::Keyboard"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(186,45): error C2065: Left: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(190,24): error C2039: "key": не является членом "sf::Event".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Event.hpp(46,7):
+       см. объявление "sf::Event"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(190,50): error C2039: "Right": не является членом "sf::Keyboard".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Keyboard.hpp(41,11):
+       см. объявление "sf::Keyboard"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(190,50): error C2065: Right: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(194,24): error C2039: "key": не является членом "sf::Event".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Event.hpp(46,7):
+       см. объявление "sf::Event"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(194,50): error C2039: "Up": не является членом "sf::Keyboard".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Keyboard.hpp(41,11):
+       см. объявление "sf::Keyboard"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(194,50): error C2065: Up: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(199,24): error C2039: "key": не является членом "sf::Event".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Event.hpp(46,7):
+       см. объявление "sf::Event"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(199,50): error C2039: "Down": не является членом "sf::Keyboard".
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Window\Keyboard.hpp(41,11):
+       см. объявление "sf::Keyboard"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(199,50): error C2065: Down: необъявленный идентификатор
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(211,18): error C2660: sf::Transformable::setPosition: функция не принимает 2 аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Transformable.hpp(70,10):
+       см. объявление "sf::Transformable::setPosition"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(211,18):
+      при попытке сопоставить список аргументов "(int, int)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(229,23): error C2660: sf::Transformable::setPosition: функция не принимает 2 аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Transformable.hpp(70,10):
+       см. объявление "sf::Transformable::setPosition"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(229,23):
+      при попытке сопоставить список аргументов "(int, int)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(248,17): error C2660: sf::Transformable::setPosition: функция не принимает 2 аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Transformable.hpp(70,10):
+       см. объявление "sf::Transformable::setPosition"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(248,17):
+      при попытке сопоставить список аргументов "(int, int)"
+  
+C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(260,30): error C2660: sf::Transformable::setPosition: функция не принимает 2 аргументов
+      C:\Users\woter\vcpkg\installed\x64-windows\include\SFML\Graphics\Transformable.hpp(70,10):
+       см. объявление "sf::Transformable::setPosition"
+      C:\Users\woter\Desktop\C++\ConsoleApplication4\TetrisGame.cpp(260,30):
+      при попытке сопоставить список аргументов "(int, int)"
+  
+  Создание кода...
