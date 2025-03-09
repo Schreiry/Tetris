@@ -10,20 +10,22 @@
 #include <sstream>
 #endif
 
-// Инициализация статических переменных
+//<><> <><> this module does not work yet <><> <><>
+
+// Initialization of static variables
 float Debug::currentFPS = 0.0f;
 std::chrono::steady_clock::time_point Debug::lastUpdate = std::chrono::steady_clock::now();
 
 void Debug::Log(const std::string& message) {
-    // Получаем текущее время и форматируем его
+    // Get the current time and format it
     auto now = std::chrono::system_clock::now();
     std::time_t timeT = std::chrono::system_clock::to_time_t(now);
     std::cout << "[" << std::put_time(std::localtime(&timeT), "%H:%M:%S") << "] " << message << std::endl;
 }
 
 void Debug::Update() {
-    // Здесь можно обновлять метрики, если потребуется (например, считать FPS на основе времени между вызовами)
-    // Для простоты можно оставить пустой, а значение FPS обновлять через SetFPS()
+    // Г‡Г¤ГҐГ±Гј Г¬Г®Г¦Г­Г® Г®ГЎГ­Г®ГўГ«ГїГІГј Г¬ГҐГІГ°ГЁГЄГЁ, ГҐГ±Г«ГЁ ГЇГ®ГІГ°ГҐГЎГіГҐГІГ±Гї (Г­Г ГЇГ°ГЁГ¬ГҐГ°, Г±Г·ГЁГІГ ГІГј FPS Г­Г  Г®Г±Г­Г®ГўГҐ ГўГ°ГҐГ¬ГҐГ­ГЁ Г¬ГҐГ¦Г¤Гі ГўГ»Г§Г®ГўГ Г¬ГЁ)
+    // Г„Г«Гї ГЇГ°Г®Г±ГІГ®ГІГ» Г¬Г®Г¦Г­Г® Г®Г±ГІГ ГўГЁГІГј ГЇГіГ±ГІГ®Г©, Г  Г§Г­Г Г·ГҐГ­ГЁГҐ FPS Г®ГЎГ­Г®ГўГ«ГїГІГј Г·ГҐГ°ГҐГ§ SetFPS()
 }
 
 void Debug::SetFPS(float fps) {
@@ -34,11 +36,11 @@ size_t Debug::GetMemoryUsage() {
 #ifdef _WIN32
     PROCESS_MEMORY_COUNTERS pmc;
     if (GetProcessMemoryInfo(GetCurrentProcess(), &pmc, sizeof(pmc))) {
-        return pmc.WorkingSetSize; // в байтах
+        return pmc.WorkingSetSize; // Гў ГЎГ Г©ГІГ Гµ
     }
     return 0;
 #else
-    // Для Linux: читаем значение VmRSS из /proc/self/status
+    // Г„Г«Гї Linux: Г·ГЁГІГ ГҐГ¬ Г§Г­Г Г·ГҐГ­ГЁГҐ VmRSS ГЁГ§ /proc/self/status
     std::ifstream statStream("/proc/self/status");
     std::string line;
     while (std::getline(statStream, line)) {
@@ -48,7 +50,7 @@ size_t Debug::GetMemoryUsage() {
             size_t memory;
             std::string unit;
             iss >> key >> memory >> unit;
-            return memory * 1024; // значение в байтах
+            return memory * 1024; // Г§Г­Г Г·ГҐГ­ГЁГҐ Гў ГЎГ Г©ГІГ Гµ
         }
     }
     return 0;
@@ -56,8 +58,8 @@ size_t Debug::GetMemoryUsage() {
 }
 
 float Debug::GetCPUUsage() {
-    // Получение загрузки процессора является сложной задачей и требует платформенно-специфичного кода.
-    // В данном примере возвращаем 0.0f. Для Windows можно использовать GetProcessTimes, для Linux – /proc/stat.
+    // ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ Г§Г ГЈГ°ГіГ§ГЄГЁ ГЇГ°Г®Г¶ГҐГ±Г±Г®Г°Г  ГїГўГ«ГїГҐГІГ±Гї Г±Г«Г®Г¦Г­Г®Г© Г§Г Г¤Г Г·ГҐГ© ГЁ ГІГ°ГҐГЎГіГҐГІ ГЇГ«Г ГІГґГ®Г°Г¬ГҐГ­Г­Г®-Г±ГЇГҐГ¶ГЁГґГЁГ·Г­Г®ГЈГ® ГЄГ®Г¤Г .
+    // Г‚ Г¤Г Г­Г­Г®Г¬ ГЇГ°ГЁГ¬ГҐГ°ГҐ ГўГ®Г§ГўГ°Г Г№Г ГҐГ¬ 0.0f. Г„Г«Гї Windows Г¬Г®Г¦Г­Г® ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ ГІГј GetProcessTimes, Г¤Г«Гї Linux вЂ“ /proc/stat.
     return 0.0f;
 }
 
@@ -65,7 +67,7 @@ void Debug::PrintPerformanceInfo() {
     size_t memUsage = GetMemoryUsage();
     float cpuUsage = GetCPUUsage();
 
-    // Красивый и презентабельный вывод в консоль
+    // ГЉГ°Г Г±ГЁГўГ»Г© ГЁ ГЇГ°ГҐГ§ГҐГ­ГІГ ГЎГҐГ«ГјГ­Г»Г© ГўГ»ГўГ®Г¤ Гў ГЄГ®Г­Г±Г®Г«Гј
     std::cout << "----- Performance Info -----" << std::endl;
     std::cout << "FPS           : " << currentFPS << std::endl;
     std::cout << "Memory Usage  : " << memUsage / 1024 << " KB" << std::endl;
