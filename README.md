@@ -89,11 +89,12 @@ The project is full of interesting, in my humble opinion, solutions that not onl
 
 ## Conclusion
 
-The **Tetris using SFML** project is not just an implementation of a classic game, it is a true work of digital art, where every line of code breathes innovation and passion for perfection. We are confident that this solution will be an inspirational base for developers looking to combine functionality, beauty and high performance in a single project.
+Project **Tetris using SFML Multimedia Library** - As previously stated, just a self-study of programming in a purely language key - C++.
+ In this project you will see a lot of errors, inconsistencies and not professional approach to work.
 
-Join us, explore the possibilities, experiment with the code and make your own improvements - because the art of development is born in every new solution!
+Join me, explore the possibilities, experiment with the code and make your own improvements - because the art of development is born in every new solution!
 
----
 
-*Author: [Schreiry (David Greve)]*  
-* Date: 2025-02-14 *
+
+> *Author: [Schreiry (David Greve)]*  
+> * Date: 2025-02-14 *
