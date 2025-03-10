@@ -14,14 +14,12 @@
 
 
 
-Available Annotations:
+> [!TIP]  
+> Available Annotations:
+> - [English version] - the current version you are currently on
+> - [Russian version](./TetRu.md)
 
-- [English version] - the current version you are currently on
-- [Russian version](./TetRu.md)
-----
 
-
-### Architecture and key components
 
 ### Global constants and basic settings
 
